@@ -1,5 +1,6 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/EditorUI.hpp>
+#include <format>
 
 using namespace geode::prelude;
 
@@ -72,11 +73,12 @@ class $modify(LevelEditUI, EditorUI){
   }
 
   void onFill(CCObject* sender){
+    int affected=0;
     if(!checkCorners()) return;
-    if(!Operations::Fill(m_fields->firstCorner, m_fields->secondCorner)){
+    if(!Operations::Fill(m_fields->firstCorner, m_fields->secondCorner, &affected)){
       Notification::create("Failed to perform operation (probably no EditorUI)", CCSprite::createWithSpriteFrameName("particle_193_001.png"), 2.0f)->show();
     }
-    Notification::create("Success", CCSprite::createWithSpriteFrameName("particle_50_001.png"), 1.0f)->show();
+    Notification::create(std::format("Success (Affected {} objects)", affected), CCSprite::createWithSpriteFrameName("particle_50_001.png"), 1.0f)->show();
   }
 
   void onPattern(CCObject* sender){

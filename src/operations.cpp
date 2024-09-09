@@ -7,12 +7,15 @@
 #include "interpreter.h"
 #include "pattern_popup.hpp"
 
-bool Operations::Fill(GameObject *firstCorner, GameObject *secondCorner) {
+bool Operations::Fill(GameObject *firstCorner, GameObject *secondCorner,
+                      int *affected) {
   LevelEditorLayer *editor = GameManager::sharedState()->getEditorLayer();
   EditorUI *ui;
   if (editor == nullptr) return false;
   ui = editor->m_editorUI;
   if (ui == nullptr) return false;
+
+  int affected_obj = 0;
 
   std::vector<PatternEntry> parsed = Interpreter::parse(pattern);
 
@@ -24,6 +27,7 @@ bool Operations::Fill(GameObject *firstCorner, GameObject *secondCorner) {
         x = firstCorner->getPositionX();
         while (x <= secondCorner->getPositionX()) {
           CreateEditorObject(Interpreter::chooseRandomObjId(parsed), x, y);
+          affected_obj++;
           x += 30;
         }
         y += 30;
@@ -34,6 +38,7 @@ bool Operations::Fill(GameObject *firstCorner, GameObject *secondCorner) {
         x = firstCorner->getPositionX();
         while (x <= secondCorner->getPositionX()) {
           CreateEditorObject(Interpreter::chooseRandomObjId(parsed), x, y);
+          affected_obj++;
           x += 30;
         }
         y += 30;
@@ -54,6 +59,7 @@ bool Operations::Fill(GameObject *firstCorner, GameObject *secondCorner) {
           x = secondCorner->getPositionX();
           while (x <= firstCorner->getPositionX()) {
             CreateEditorObject(Interpreter::chooseRandomObjId(parsed), x, y);
+            affected_obj++;
             x += 30;
           }
           y += 30;
@@ -64,6 +70,7 @@ bool Operations::Fill(GameObject *firstCorner, GameObject *secondCorner) {
           x = secondCorner->getPositionX();
           while (x <= firstCorner->getPositionX()) {
             CreateEditorObject(Interpreter::chooseRandomObjId(parsed), x, y);
+            affected_obj++;
             x += 30;
           }
           y += 30;
@@ -77,5 +84,10 @@ bool Operations::Fill(GameObject *firstCorner, GameObject *secondCorner) {
       ui->deselectAll();
     }
   }
+
+  if (affected != nullptr) {
+    *affected = affected_obj;
+  }
+
   return true;
 }

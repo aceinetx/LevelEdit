@@ -11,6 +11,7 @@
 	"version": "v1.0.0",
 	"developer": "aceinet",
 	"description": "World Edit for Geometry Dash",
+  "repository": "https://github.com/aceinetx/LevelEdit",
   "resources": {
     "sprites": [
       "resources/*.png"
